@@ -167,6 +167,8 @@ jQuery(
 						$( '#content_ifr' ).contents().find( 'body' ).attr( 'dir', dir );
 					}
 				);
+
+				pllMediaController.trigger( 'changeLang' )
 			}
 		);
 
@@ -211,3 +213,14 @@ jQuery(
 		init_translations();
 	}
 );
+
+var pllMediaController = {}
+
+_.extend( pllMediaController, Backbone.Events )
+
+pllMediaController.on(
+	'changeLang',
+	function() {
+		console.log( 'Language changed!' )
+	}
+)
