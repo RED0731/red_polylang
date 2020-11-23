@@ -219,7 +219,40 @@ jQuery(
  */
 var pllMedia = {
 	controller: _.extend( {}, Backbone.Events ),
+
+	/**
+	 * References {@see wp.media.model.Attachments} to call it later.
+	 * 
+	 * @type wp.media.model.Attachments
+	 */
+	AttachmentsOriginalConstructor: wp.media.view.Attachments,
+
+	LocalizedAttachments: null
 };
+
+/**
+ * @memberof pllMedia
+ * 
+ * @since 3.0
+ * 
+ * @class
+ * @augments wp.media.model.Attachments
+ * @augments Backbone.Collection
+ */
+pllMedia.LocalizedAttachments = wp.media.view.Attachments.extend(
+	/** @lends pllMedia.LocalizedAttachments.prototype */    {
+		initialize: function () {
+			pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
+		},
+
+		isLocalized: function() {
+			return true
+		}
+	}
+)
+
+// Subsitute WordPress component with Polylang's extended one
+wp.media.view.Attachments = pllMedia.LocalizedAttachments
 
 pllMedia.controller.on(
 	'changeLang',
