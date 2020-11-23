@@ -168,7 +168,7 @@ jQuery(
 					}
 				);
 
-				pllMediaController.trigger( 'changeLang' )
+				pllMedia.controller.trigger( 'changeLang' )
 			}
 		);
 
@@ -214,13 +214,17 @@ jQuery(
 	}
 );
 
-var pllMediaController = {}
+/**
+ * @namespace pllMedia
+ */
+var pllMedia = {
+	controller: _.extend( {}, Backbone.Events ),
+};
 
-_.extend( pllMediaController, Backbone.Events )
-
-pllMediaController.on(
+pllMedia.controller.on(
 	'changeLang',
 	function() {
 		console.log( 'Language changed!' )
 	}
-)
+);
+
