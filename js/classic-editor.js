@@ -221,11 +221,14 @@ var pllMedia = {
 	controller: _.extend( {}, Backbone.Events ),
 
 	/**
-	 * References {@see wp.media.model.Attachments} to call it later.
-	 * 
-	 * @type wp.media.model.Attachments
+	 * References {@see wp.media.view.Attachments} to call it later.
 	 */
 	AttachmentsOriginalConstructor: wp.media.view.Attachments,
+
+	/**
+	 * References {@see wp.media.view.Attachments} to call it later.
+	 */
+	AttachmentsSelectionOriginalConstructor: wp.media.view.Attachments.Selection,
 
 	LocalizedAttachments: null
 };
@@ -242,22 +245,42 @@ var pllMedia = {
 pllMedia.LocalizedAttachments = wp.media.view.Attachments.extend(
 	/** @lends pllMedia.LocalizedAttachments.prototype */    {
 		initialize: function () {
+			this.observer = _.extend( {}, Backbone.Events )
+			this.observer.listenTo( pllMedia.controller, 'changeLang', this.changeLang )
 			pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
 		},
 
-		isLocalized: function() {
-			return true
-		}
+		changeLang: function() {
+			console.log( 'Language changed!' )
+		},
 	}
-)
+);
 
 // Subsitute WordPress component with Polylang's extended one
 wp.media.view.Attachments = pllMedia.LocalizedAttachments
 
-pllMedia.controller.on(
-	'changeLang',
-	function() {
-		console.log( 'Language changed!' )
+/**
+ * @memberof pllMedia
+ * 
+ * @since 3.0
+ * 
+ * @class
+ * @augments wp.media.model.Attachments.Selection
+ * @augments Backbone.Collection
+ */
+pllMedia.LocalizedAttachments.Selection = wp.media.view.Attachments.Selection.extend(
+	/** @lends pllMedia.LocalizedAttachments.Selection.prototype */    {
+		initialize: function () {
+			this.observer = _.extend( {}, Backbone.Events )
+			this.observer.listenTo( pllMedia.controller, 'changeLang', this.changeLang )
+			pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
+		},
+
+		changeLang: function() {
+			console.log( 'Language changed!' )
+		},
 	}
 );
 
+// Subsitute WordPress component with Polylang's extended one
+wp.media.view.Attachments.Selection = pllMedia.LocalizedAttachments.Selection
