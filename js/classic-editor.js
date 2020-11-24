@@ -245,13 +245,15 @@ var pllMedia = {
 pllMedia.LocalizedAttachments = wp.media.view.Attachments.extend(
 	/** @lends pllMedia.LocalizedAttachments.prototype */    {
 		initialize: function () {
-			this.observer = _.extend( {}, Backbone.Events )
-			this.observer.listenTo( pllMedia.controller, 'changeLang', this.changeLang )
-			pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
+			this.listenTo( pllMedia.controller, 'changeLang', this.refreshCollection )
+			return pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
 		},
 
-		changeLang: function() {
-			console.log( 'Language changed!' )
+		refreshCollection: function() {
+			if (this.collection.mirroring) {
+				this.collection.mirroring._hasMore = true
+			}
+			this.collection.reset()
 		},
 	}
 );
@@ -271,13 +273,15 @@ wp.media.view.Attachments = pllMedia.LocalizedAttachments
 pllMedia.LocalizedAttachments.Selection = wp.media.view.Attachments.Selection.extend(
 	/** @lends pllMedia.LocalizedAttachments.Selection.prototype */    {
 		initialize: function () {
-			this.observer = _.extend( {}, Backbone.Events )
-			this.observer.listenTo( pllMedia.controller, 'changeLang', this.changeLang )
-			pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
+			this.listenTo( pllMedia.controller, 'changeLang', this.refreshCollection )
+			return pllMedia.AttachmentsOriginalConstructor.prototype.initialize.apply( this, arguments );
 		},
 
-		changeLang: function() {
-			console.log( 'Language changed!' )
+		refreshCollection: function() {
+			if (this.collection.mirroring) {
+				this.collection.mirroring._hasMore = true
+			}
+			this.collection.reset()
 		},
 	}
 );
