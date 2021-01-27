@@ -29,7 +29,11 @@
  * @return string|array Either the html markup of the switcher or the raw elements to build a custom language switcher.
  */
 function pll_the_languages( $args = array() ) {
-	if ( PLL() instanceof PLL_Frontend ) {
+	$is_switcher_admin_displayable = is_callable( 'get_current_screen' ) ? 'appearance_page_gutenberg-widgets' === get_current_screen()->base : false;
+	if ( $is_switcher_admin_displayable ) {
+		$args['admin_render'] = 1;
+	}
+	if ( PLL() instanceof PLL_Frontend || $is_switcher_admin_displayable ) {
 		$switcher = new PLL_Switcher();
 		return $switcher->the_languages( PLL()->links, $args );
 	}
