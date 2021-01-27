@@ -465,7 +465,7 @@ class PLL_Filters {
 	public function widget_update_callback( $instance, $new_instance, $old_instance, $widget ) {
 		$key = $widget->id . '_lang_choice';
 
-		if ( ! empty( $_POST[ $key ] ) && $lang = $this->model->get_language( sanitize_key( $_POST[ $key ] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
+		if ( ! empty( $new_instance[ $key ] ) && $lang = $this->model->get_language( sanitize_key( $new_instance[ $key ] ) ) ) { // phpcs:ignore WordPress.Security.NonceVerification
 			$instance['pll_lang'] = $lang->slug;
 		} else {
 			unset( $instance['pll_lang'] );
