@@ -166,6 +166,7 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		$scripts = array(
 			'user'    => array( array( 'profile', 'user-edit' ), array( 'jquery' ), 0, 0 ),
 			'widgets' => array( array( 'widgets' ), array( 'jquery' ), 0, 0 ),
+			'widgets-block-editor' => array( array( 'appearance_page_gutenberg-widgets' ), array( 'jquery' ), 0, 0 )
 		);
 
 		if ( ! empty( $screen->post_type ) && $this->model->is_translated_post_type( $screen->post_type ) ) {
@@ -223,6 +224,15 @@ abstract class PLL_Admin_Base extends PLL_Base {
 		if ( wp_script_is( 'pll_widgets', 'enqueued' ) ) {
 			wp_localize_script(
 				'pll_widgets',
+				'pll_widgets',
+				array(
+					'flags' => wp_list_pluck( $this->model->get_languages_list(), 'flag', 'slug' ),
+				)
+			);
+		}
+		elseif ( wp_script_is( 'pll_widgets-block-editor', 'enqueued' ) ) {
+			wp_localize_script(
+				'pll_widgets-block-editor',
 				'pll_widgets',
 				array(
 					'flags' => wp_list_pluck( $this->model->get_languages_list(), 'flag', 'slug' ),
