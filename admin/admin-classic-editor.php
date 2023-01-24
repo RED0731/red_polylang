@@ -158,6 +158,10 @@ class PLL_Admin_Classic_Editor {
 	public function post_lang_choice() {
 		check_ajax_referer( 'pll_language', '_pll_nonce' );
 
+		if ( isset( $_POST['pll_wc_order'] ) && (bool) $_POST['pll_wc_order'] ) {
+			$_POST['post_type'] = 'shop_order';
+		}
+
 		if ( ! isset( $_POST['post_id'], $_POST['lang'], $_POST['post_type'] ) ) {
 			wp_die( 'The request is missing the parameter "post_type", "lang" and/or "post_id".' );
 		}
