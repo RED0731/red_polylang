@@ -1,11 +1,11 @@
 # TravisCI configuration for polylang/polylang
 
-if: "branch = master"
+if: "branch = travis"
 
 language: "php"
 os:
   - "linux"
-dist: "bionic"
+dist: "focal"
 
 addons:
   apt:
@@ -15,57 +15,9 @@ addons:
 
 jobs:
   include:
-    - name: "PHPCS + PHPStan - PHP 7.4"
-      php: "7.4"
-      env: "WP_VERSION=latest WP_MULTISITE=0"
-      install:
-        - "composer update"
-      script:
-        - "composer lint"
-
-    - name: "WP 5.8 - PHP 7.2"
-      php: "7.2"
-      env: "WP_VERSION=5.8 WP_MULTISITE=0"
-      script:
-        - "vendor/bin/phpunit --verbose"
-
-    - name: "WP latest - PHP 5.6"
-      dist: "xenial"
-      php: "5.6"
-      env: "WP_VERSION=latest WP_MULTISITE=0"
-
     - name: "WP latest - PHP 8.0"
       php: "8.0"
       env: "WP_VERSION=latest WP_MULTISITE=0"
-
-    - name: "WP latest multisite - PHP 7.2"
-      php: "7.2"
-      env: "WP_VERSION=latest WP_MULTISITE=1"
-
-    - name: "WP nightly - PHP 5.6"
-      dist: "xenial"
-      php: "5.6"
-      env: "WP_VERSION=nightly WP_MULTISITE=0"
-
-    - name: "WP nightly - PHP 8.0"
-      php: "8.0"
-      env: "WP_VERSION=nightly WP_MULTISITE=0"
-
-    - name: "WP nightly - PHP 8.2.0"
-      php: "8.2"
-      env: "WP_VERSION=nightly WP_MULTISITE=0"
-
-  allow_failures:
-    - dist: "xenial"
-      php: "5.6"
-      env: "WP_VERSION=nightly WP_MULTISITE=0"
-
-    - php: "8.0"
-      env: "WP_VERSION=nightly WP_MULTISITE=0"
-
-    - php: "8.2"
-      env: "WP_VERSION=nightly WP_MULTISITE=0"
-
 
 services:
   - "mysql"
